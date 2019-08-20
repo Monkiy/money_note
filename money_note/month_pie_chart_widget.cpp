@@ -1,0 +1,18 @@
+﻿#include "month_pie_chart_widget.h"
+#include "ui_month_pie_chart_widget.h"
+#include "money_data.h"
+
+month_pie_chart_widget::month_pie_chart_widget(QWidget* parent) :
+    item_widget(parent),
+    ui(new Ui::month_pie_chart_widget())
+{
+    ui->setupUi(this);
+}
+
+month_pie_chart_widget::~month_pie_chart_widget()
+{
+}
+
+void month_pie_chart_widget::update()
+{
+}
