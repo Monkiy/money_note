@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>money_note_widget</class>
+ <widget class="QWidget" name="money_note_widget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="2,1,1">
+   <item>
+    <widget class="QGroupBox" name="groupBox_year">
+     <property name="title">
+      <string>年度总计 0</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QDateEdit" name="dateEdit_year">
+          <property name="displayFormat">
+           <string>yyyy</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>年</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_year_chart">
+          <property name="text">
+           <string>历年折线图</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_month_chart">
+          <property name="text">
+           <string>年度折线图</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_year_pie_chart">
+          <property name="text">
+           <string>扇形图</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QTableWidget" name="tableWidget_year">
+          <column>
+           <property name="text">
+            <string>月份</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>金额</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableWidget_year_class">
+          <column>
+           <property name="text">
+            <string>类别</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>金额</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>比例</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_month">
+     <property name="title">
+      <string>本月总计 0</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_month_pie_chart">
+          <property name="text">
+           <string>扇形图</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableWidget_month_class">
+        <column>
+         <property name="text">
+          <string>类别</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>金额</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>比例</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_day">
+     <property name="title">
+      <string>今日总计 0</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_add">
+          <property name="text">
+           <string>新增</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableWidget_day">
+        <column>
+         <property name="text">
+          <string>类型</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>金额</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>描述</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton_add</sender>
+   <signal>clicked()</signal>
+   <receiver>money_note_widget</receiver>
+   <slot>slot_add_note_bt_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>779</x>
+     <y>54</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>793</x>
+     <y>338</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_month_pie_chart</sender>
+   <signal>clicked()</signal>
+   <receiver>money_note_widget</receiver>
+   <slot>slot_month_pie_chart_bt_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>554</x>
+     <y>44</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>45</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_month_chart</sender>
+   <signal>clicked()</signal>
+   <receiver>money_note_widget</receiver>
+   <slot>slot_month_line_chart_bt_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>268</x>
+     <y>47</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>398</x>
+     <y>41</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_year_chart</sender>
+   <signal>clicked()</signal>
+   <receiver>money_note_widget</receiver>
+   <slot>slot_year_line_chart_bt_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>175</x>
+     <y>42</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>257</x>
+     <y>6</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_year_pie_chart</sender>
+   <signal>clicked()</signal>
+   <receiver>money_note_widget</receiver>
+   <slot>slot_year_pie_chart_bt_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>349</x>
+     <y>40</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>350</x>
+     <y>-2</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_add_note_bt_clicked()</slot>
+  <slot>slot_month_pie_chart_bt_clicked()</slot>
+  <slot>slot_month_line_chart_bt_clicked()</slot>
+  <slot>slot_year_line_chart_bt_clicked()</slot>
+  <slot>slot_year_pie_chart_bt_clicked()</slot>
+ </slots>
+</ui>
