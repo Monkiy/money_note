@@ -18,8 +18,24 @@ add_note_widget::~add_note_widget()
 
 void add_note_widget::update()
 {
+    update_date();
     update_type_combox();
     update_day_table();
+}
+
+void add_note_widget::update_date()
+{
+    QDate date = property("date").toDate();
+    if (date.isNull())
+    {
+        ui->dateEdit->setDate(QDate(money_data.get_date() / 10000,
+        (money_data.get_date() % 10000) / 100,
+        money_data.get_date() % 100));
+    }
+    else
+    {
+        ui->dateEdit->setDate(date);
+    }
 }
 
 void add_note_widget::update_type_combox()
@@ -39,7 +55,9 @@ void add_note_widget::update_type_combox()
 void add_note_widget::update_day_table()
 {
     //更新当日消费纪录
-    auto money_list = money_data.poll_money(money_data.get_date(), money_data.get_date());
+    QDate date = ui->dateEdit->date();
+    int date_key = date.year() * 10000 + date.month() * 100 + date.day();
+    auto money_list = money_data.poll_money(date_key, date_key);
     ui->tableWidget_day->setRowCount(money_list.size());
     float total = 0.0f;
     int row_count = 0;
@@ -58,21 +76,29 @@ void add_note_widget::update_day_table()
 
         total += iter->money;
     }
-    ui->groupBox_day->setTitle(QString::fromLocal8Bit("今日总计 %1").arg(total));
+    ui->groupBox_day->setTitle(QString::fromLocal8Bit("%1 总计 %2").arg(date.toString("yyyy/MM/dd")).arg(total));
+}
+
+void add_note_widget::slot_date_changed()
+{
+    setProperty("date", ui->dateEdit->date());
+    update();
 }
 
 void add_note_widget::slot_add_note_bt_clicked()
 {
     //添加一条消费纪录
+    QDate date = ui->dateEdit->date();
+    int date_key = date.year() * 10000 + date.month() * 100 + date.day();
     QString money_type = ui->comboBox_type->currentText();
     if (0 == money_type.length())
         return;
     float money = ui->doubleSpinBox_value->value();
     QString money_note = ui->lineEdit_note->text();
     if (money_note.length())
-        money_data.add_note(money_type.toLocal8Bit().data(), money, money_note.toLocal8Bit().data());
+        money_data.add_note(date_key, money_type.toLocal8Bit().data(), money, money_note.toLocal8Bit().data());
     else
-        money_data.add_note(money_type.toLocal8Bit().data(), money);
+        money_data.add_note(date_key, money_type.toLocal8Bit().data(), money);
 
     setProperty("money_type", money_type);
     update();

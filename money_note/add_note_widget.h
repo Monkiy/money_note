@@ -15,10 +15,12 @@ public:
     void update();
 
 private:
+    void update_date();
     void update_type_combox();
     void update_day_table();
 
 private slots:
+    void slot_date_changed();
     void slot_add_note_bt_clicked();
     void slot_add_type_bt_clicked();
 private:
