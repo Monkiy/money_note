@@ -5,6 +5,11 @@ namespace Ui {
     class month_pie_chart_widget;
 } // namespace Ui
 
+namespace QtCharts
+{
+    class QChartView;
+}
+
 class month_pie_chart_widget :public item_widget
 {
     Q_OBJECT
@@ -13,8 +18,13 @@ public:
     ~month_pie_chart_widget();
 
     void update();
+private:
+    void init_charts();
+    void update_month_table();
+    void update_month_charts();
 
 private slots:
 private:
     Ui::month_pie_chart_widget* ui;
+    QtCharts::QChartView* __charts;
 };
