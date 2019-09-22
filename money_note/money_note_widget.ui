@@ -24,6 +24,17 @@
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QDateEdit" name="dateEdit_year">
+          <property name="styleSheet">
+           <string notr="true">QDateEdit
+{
+	border:1px solid #242424;
+}
+ 
+QDateEdit::up-button,QDateEdit::down-button
+{
+	width:0px;
+}</string>
+          </property>
           <property name="displayFormat">
            <string>yyyy</string>
           </property>

@@ -94,6 +94,8 @@ void add_note_widget::slot_add_note_bt_clicked()
     if (0 == money_type.length())
         return;
     float money = ui->doubleSpinBox_value->value();
+    if (0.01l > money)
+        return;
     QString money_note = ui->lineEdit_note->text();
     if (money_note.length())
         money_data.add_note(date_key, money_type.toLocal8Bit().data(), money, money_note.toLocal8Bit().data());
@@ -101,6 +103,8 @@ void add_note_widget::slot_add_note_bt_clicked()
         money_data.add_note(date_key, money_type.toLocal8Bit().data(), money);
 
     setProperty("money_type", money_type);
+    ui->doubleSpinBox_value->setValue(0);
+    ui->lineEdit_note->clear();
     update();
 }
 
