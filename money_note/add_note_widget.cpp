@@ -9,6 +9,7 @@ add_note_widget::add_note_widget(QWidget* parent) :
     ui->setupUi(this);
     ui->tableWidget_day->verticalHeader()->hide();
     ui->tableWidget_day->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->doubleSpinBox_value->clear();
 }
 
 add_note_widget::~add_note_widget()
@@ -103,7 +104,7 @@ void add_note_widget::slot_add_note_bt_clicked()
         money_data.add_note(date_key, money_type.toLocal8Bit().data(), money);
 
     setProperty("money_type", money_type);
-    ui->doubleSpinBox_value->setValue(0);
+    ui->doubleSpinBox_value->clear();
     ui->lineEdit_note->clear();
     update();
 }
