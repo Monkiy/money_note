@@ -69,6 +69,20 @@ void month_pie_chart_widget::update_month_table()
             class_list.push_back(item);
         }
     }
+    class_list.sort([](const std::pair<string, float> &c0, const std::pair<string, float> &c1)->bool
+    {
+        if (c0.first == "工资" || c1.first == "工资")
+        {
+            if (c0.first == "工资")
+                return false;
+            else
+                return true;
+        }
+        else
+        {
+            return c0.first < c1.first;
+        }
+    });
 
     ui->groupBox_month->setTitle(QString::fromLocal8Bit("本月总计 %1/%2").arg(consumer_total).arg(wages_total));
     int row = 0;

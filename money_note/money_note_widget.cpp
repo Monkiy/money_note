@@ -130,6 +130,20 @@ void money_note_widget::update_year_table()
         }
     }
     ui->tableWidget_year_class->setRowCount(class_list.size());
+    class_list.sort([](const std::pair<string, float> &c0, const std::pair<string, float> &c1)->bool
+    {
+        if (c0.first == "工资" || c1.first == "工资")
+        {
+            if (c0.first == "工资")
+                return false;
+            else
+                return true;
+        }
+        else
+        {
+            return c0.first < c1.first;
+        }
+    });
     row = 0;
     for (auto class_iter = class_list.begin(); class_iter != class_list.end(); ++class_iter, ++row)
     {
@@ -191,6 +205,21 @@ void money_note_widget::update_month_table()
             class_list.push_back(item);
         }
     }
+
+    class_list.sort([](const std::pair<string, float> &c0, const std::pair<string, float> &c1)->bool
+    {
+        if (c0.first == "工资" || c1.first == "工资")
+        {
+            if (c0.first == "工资")
+                return false;
+            else
+                return true;
+        }
+        else
+        {
+            return c0.first < c1.first;
+        }
+    });
 
     ui->groupBox_month->setTitle(QString::fromLocal8Bit("本月总计 %1/%2").arg(consumer_total).arg(wages_total));
     int row = 0;
