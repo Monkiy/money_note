@@ -64,18 +64,19 @@ list<money_data_item> money_sql_data::poll_money(int start_date, int end_date)
 {
     char sql[512] = {};
     snprintf(sql, sizeof(sql),
-        "select * from money_note where date>=%d and date <= %d;", start_date, end_date);
+        "select rowid,* from money_note where date>=%d and date <= %d;", start_date, end_date);
     list<money_data_item> money_list;
     auto show_note_sql_call_back = [&money_list](int argc, std::string* argv, std::string* col_name)
     {
-        if (3 > argc)
+        if (4 > argc)
             return;
         money_data_item item;
-        item.data = str_to_int(argv[0]);
-        item.money_type = argv[1];
-        item.money = str_to_float(argv[2]);
-        if (argc == 4)
-            item.money_note = argv[3];
+        item.rowid= str_to_int(argv[0]);
+        item.data = str_to_int(argv[1]);
+        item.money_type = argv[2];
+        item.money = str_to_float(argv[3]);
+        if (argc == 5)
+            item.money_note = argv[4];
         money_list.push_back(item);
     };
     SQL.exec(sql, show_note_sql_call_back);

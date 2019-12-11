@@ -1,6 +1,6 @@
-#include"code.h"
+ï»¿#include"code.h"
 
-//ÆäËû×Ö·û´®×ªUnicode 
+//å…¶ä»–å­—ç¬¦ä¸²è½¬Unicode 
 void str_to_unicode(const std::string& str, std::wstring &unicode_str, int code_page)
 {
     unicode_str.clear();
@@ -13,7 +13,7 @@ void str_to_unicode(const std::string& str, std::wstring &unicode_str, int code_
     {
         throw std::exception("Error in conversion.");
     }
-    unicode_str.resize(widesize);
+    unicode_str.resize(widesize - 1);
     int convresult = ::MultiByteToWideChar(code_page, 0, str.c_str(), -1, const_cast<LPWSTR>(unicode_str.data()), widesize);
     if (convresult != widesize)
     {
@@ -21,7 +21,7 @@ void str_to_unicode(const std::string& str, std::wstring &unicode_str, int code_
     }
 }
 
-//unicode×ªÎªÆäËû×Ö·û´®
+//unicodeè½¬ä¸ºå…¶ä»–å­—ç¬¦ä¸²
 void unicode_to_str(const std::wstring &unicode_str, std::string& str, int code_page)
 {
     int str_size = ::WideCharToMultiByte(code_page, 0, unicode_str.c_str(), -1, NULL, 0, NULL, NULL);
@@ -33,7 +33,7 @@ void unicode_to_str(const std::wstring &unicode_str, std::string& str, int code_
     {
         throw std::exception("Error in conversion.");
     }
-    str.resize(str_size);
+    str.resize(str_size - 1);
     int convresult = ::WideCharToMultiByte(code_page, 0, unicode_str.c_str(), -1, const_cast<char*>(str.data()), str_size, NULL, NULL);
     if (convresult != str_size)
     {
@@ -41,7 +41,7 @@ void unicode_to_str(const std::wstring &unicode_str, std::string& str, int code_
     }
 }
 
-//first_code±àÂë×ªnext_code±àÂë
+//first_codeç¼–ç è½¬next_codeç¼–ç 
 void str_to_str(const std::string & first, std::string& next, int first_code, int next_code)
 {
     if (first_code == next_code)
@@ -55,7 +55,7 @@ void str_to_str(const std::string & first, std::string& next, int first_code, in
 }
 
 
-//falot×Ö·û´®×ªfloat
+//falotå­—ç¬¦ä¸²è½¬float
 float str_to_float(const std::string &v)
 {
     float ret = 0;
@@ -74,7 +74,7 @@ float str_to_float(const std::string &v)
     return ret;
 }
 
-//int×Ö·û´®×ªint
+//intå­—ç¬¦ä¸²è½¬int
 int str_to_int(const std::string & v)
 {
     return atoi(v.c_str());

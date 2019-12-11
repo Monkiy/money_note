@@ -9,6 +9,7 @@ using std::string;
 
 struct money_data_item
 {
+    unsigned int rowid;
     int data;
     float money;
     string money_type;

@@ -42,12 +42,16 @@ void month_pie_chart_widget::update_month_table()
 {
     //当月统计
     auto money_list = money_data.poll_money(money_data.get_month(), money_data.get_date());
-    float total = 0.0f;
+    float consumer_total = 0.0f;//消费总计
+    float wages_total = 0.0f;//工资总计
     list < std::pair<string, float>> class_list;
     for (auto iter = money_list.begin(); iter != money_list.end(); ++iter)
     {
         //统计总金额
-        total += iter->money;
+        if (iter->money_type != "工资")
+            consumer_total += iter->money;
+        else
+            wages_total += iter->money;
         //统计类别
         auto class_iter = class_list.begin();
         for (; class_iter != class_list.end(); ++class_iter)
@@ -66,7 +70,7 @@ void month_pie_chart_widget::update_month_table()
         }
     }
 
-    ui->groupBox_month->setTitle(QString::fromLocal8Bit("本月总计 %1").arg(total));
+    ui->groupBox_month->setTitle(QString::fromLocal8Bit("本月总计 %1/%2").arg(consumer_total).arg(wages_total));
     int row = 0;
     ui->tableWidget_month_class->setRowCount(class_list.size());
     for (auto class_iter = class_list.begin(); class_iter != class_list.end(); ++class_iter, ++row)
@@ -78,7 +82,10 @@ void month_pie_chart_widget::update_month_table()
         item->setText(QString::fromLocal8Bit("%1").arg(class_iter->second));
         ui->tableWidget_month_class->setItem(row, 1, item);
         item = new QTableWidgetItem();
-        item->setText(QString::fromLocal8Bit("%1%").arg(QString::number(100 * class_iter->second / total, 'f', 2)));
+        if (class_iter->first != "工资")
+            item->setText(QString::fromLocal8Bit("%1%").arg(QString::number(100 * class_iter->second / consumer_total, 'f', 2)));
+        else
+            item->setText(QString::fromLocal8Bit("%1%").arg(QString::number(100, 'f', 2)));
         ui->tableWidget_month_class->setItem(row, 2, item);
     }
 }
@@ -91,6 +98,8 @@ void month_pie_chart_widget::update_month_charts()
     list < std::pair<string, float>> class_list;
     for (auto iter = money_list.begin(); iter != money_list.end(); ++iter)
     {
+        if (iter->money_type == "工资")
+            continue;
         //统计类别
         auto class_iter = class_list.begin();
         for (; class_iter != class_list.end(); ++class_iter)

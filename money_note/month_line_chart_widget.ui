@@ -29,7 +29,12 @@
         </column>
         <column>
          <property name="text">
-          <string>金额</string>
+          <string>消费</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>工资</string>
          </property>
         </column>
        </widget>

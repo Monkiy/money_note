@@ -75,7 +75,8 @@ void add_note_widget::update_day_table()
         item->setText(QString::fromLocal8Bit(iter->money_note.c_str()));
         ui->tableWidget_day->setItem(row_count, 2, item);
 
-        total += iter->money;
+        if (iter->money_type != "工资")
+            total += iter->money;
     }
     ui->groupBox_day->setTitle(QString::fromLocal8Bit("%1 总计 %2").arg(date.toString("yyyy/MM/dd")).arg(total));
 }
