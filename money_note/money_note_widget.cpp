@@ -21,6 +21,7 @@ money_note_widget::money_note_widget(QWidget* parent):
     ui->tableWidget_year_class->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableWidget_month_class->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableWidget_day->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->dateEdit_year->setDate(QDate(money_data.get_year() / 10000, 1, 1));
 }
 
 money_note_widget::~money_note_widget()
@@ -30,7 +31,6 @@ money_note_widget::~money_note_widget()
 
 void money_note_widget::update()
 {
-    update_year_table();
     update_month_table();
     update_day_table();
 }
@@ -38,7 +38,8 @@ void money_note_widget::update()
 void money_note_widget::update_year_table()
 {
     //年度统计
-    auto money_list = money_data.poll_money(money_data.get_year(), money_data.get_date());
+    int year_val = ui->dateEdit_year->date().toString("yyyy").toInt();
+    auto money_list = money_data.poll_money(year_val * 10000, year_val * 10000 + 1231);
     float consumer_total = 0.0f;//消费总计
     float wages_total = 0.0f;//工资总计
     list<std::pair<int, float>> consumer_month_list;
@@ -107,7 +108,6 @@ void money_note_widget::update_year_table()
     }
 
     ui->groupBox_year->setTitle(QString::fromLocal8Bit("年度总计 %1/%2").arg(consumer_total).arg(wages_total));
-    ui->dateEdit_year->setDate(QDate(money_data.get_year() / 10000, 1, 1));
     ui->tableWidget_year->setRowCount(consumer_month_list.size());
     int row = 0;
     for (auto month_iter = consumer_month_list.begin(); month_iter != consumer_month_list.end(); ++month_iter, ++row)
@@ -290,4 +290,15 @@ void money_note_widget::slot_month_pie_chart_bt_clicked()
 void money_note_widget::slot_add_note_bt_clicked()
 {
     widgets.push_widget(new add_note_widget());
+}
+
+void money_note_widget::on_dateEdit_year_dateChanged(QDate)
+{
+    int year_val = ui->dateEdit_year->date().toString("yyyy").toInt();
+    if (year_val > money_data.get_year() / 10000)
+    {
+        ui->dateEdit_year->setDate(QDate(money_data.get_year() / 10000, 1, 1));
+        return;
+    }
+    update_year_table();
 }

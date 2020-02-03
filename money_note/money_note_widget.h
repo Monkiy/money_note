@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <QDate>
 #include "item_widget.h"
 
 namespace Ui {
@@ -24,6 +25,8 @@ private slots:
     void slot_year_pie_chart_bt_clicked();
     void slot_month_pie_chart_bt_clicked();
     void slot_add_note_bt_clicked();
+
+    void on_dateEdit_year_dateChanged(QDate);
 private:
     Ui::money_note_widget* ui;
 };
