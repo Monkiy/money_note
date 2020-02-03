@@ -13,19 +13,30 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>150</x>
-     <y>100</y>
-     <width>54</width>
-     <height>12</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>year_line</string>
-   </property>
-  </widget>
+  <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,3">
+   <item>
+    <widget class="QTableWidget" name="tableWidget_year">
+     <column>
+      <property name="text">
+       <string>年份</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>消费</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>工资</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout"/>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

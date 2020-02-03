@@ -10,6 +10,7 @@ add_note_widget::add_note_widget(QWidget* parent) :
     ui->tableWidget_day->verticalHeader()->hide();
     ui->tableWidget_day->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->doubleSpinBox_value->clear();
+    ui->dateEdit->setCalendarPopup(true);
 }
 
 add_note_widget::~add_note_widget()
@@ -83,6 +84,14 @@ void add_note_widget::update_day_table()
 
 void add_note_widget::slot_date_changed()
 {
+    int date_val = ui->dateEdit->date().toString("yyyyMMdd").toInt();
+    if (date_val > money_data.get_date())
+    {
+        ui->dateEdit->setDate(QDate(money_data.get_date() / 10000,
+            (money_data.get_date() % 10000) / 100,
+            money_data.get_date() % 100));
+        return;
+    }
     setProperty("date", ui->dateEdit->date());
     update();
 }
