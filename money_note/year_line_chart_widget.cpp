@@ -200,6 +200,10 @@ void year_line_chart_widget::update_year_charts()
             max_value = year_iter->second;
     }
 
+    consumer_seriesx->setPointLabelsFormat("@yPoint");
+    wages_seriesx->setPointLabelsFormat("@yPoint");
+    consumer_seriesx->setPointLabelsVisible(true);
+    wages_seriesx->setPointLabelsVisible(true);
     __charts->chart()->addSeries(consumer_seriesx);
     __charts->chart()->addSeries(wages_seriesx);
 
@@ -207,11 +211,13 @@ void year_line_chart_widget::update_year_charts()
     axisx->append(categories);
     __charts->chart()->createDefaultAxes();
     __charts->chart()->setAxisX(axisx, consumer_seriesx);
+    __charts->chart()->setAxisX(axisx, wages_seriesx);
 
     QValueAxis *axisy = new QValueAxis;
     axisy->setRange(0, ((int)(max_value + 999.99)) / 1000 * 1000);
     axisy->setTitleText(QString::fromLocal8Bit("元"));
     __charts->chart()->setAxisY(axisy, consumer_seriesx);
+    __charts->chart()->setAxisY(axisy, wages_seriesx);
 
     __charts->chart()->setTitle(QString::fromLocal8Bit("历年总计"));
 }
