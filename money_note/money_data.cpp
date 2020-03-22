@@ -34,20 +34,47 @@ void money_sql_data::add_note(const char * money_type, float money, const char *
     add_note(get_date(), money_type, money, note);
 }
 
+void money_sql_data::update_note(unsigned int rowid, int date, const char * money_type, float money, const char * note)
+{
+    char sql[512] = {};
+    if (note)
+    {
+        snprintf(sql, sizeof(sql),
+            "update money_note set date=%d,type='%s',money=%.2f,note='%s' where rowid=%d"
+            , date, money_type, money, note ,rowid);
+    }
+    else
+    {
+        snprintf(sql, sizeof(sql),
+            "update money_note set date=%d,type='%s',money=%.2f,note=null where rowid=%d"
+            , date, money_type, money, rowid);
+    }
+    QSqlQuery query;
+    query.exec(sql);
+}
+
+void money_sql_data::remove_note(unsigned int rowid)
+{
+    char sql[512] = {};
+    snprintf(sql, sizeof(sql), "delete money_note where rowid=%d", rowid);
+    QSqlQuery query;
+    query.exec(sql);
+}
+
 void money_sql_data::add_type(const char * money_type)
 {
     char sql[512] = {};
     snprintf(sql, sizeof(sql),
         "insert into note_type(name,use_times) "
         "values "
-        "('%s',%d);", money_type, 9999);
+        "('%s',%d);", money_type, 0);
     QSqlQuery query;
     query.exec(sql);
 }
 
-list<std::pair<string, int>> money_sql_data::get_type_list()
+list<std::pair<QString, int>> money_sql_data::get_type_list()
 {
-    list<std::pair<string, int>> type_list;
+    list<std::pair<QString, int>> type_list;
     char sql[512] = "select * from note_type;";
 
     QSqlQuery query;
@@ -57,8 +84,8 @@ list<std::pair<string, int>> money_sql_data::get_type_list()
     do
     {
         QSqlRecord record = query.record();
-        std::pair<string, int> item;
-        item.first = record.value("name").toString().toStdString();
+        std::pair<QString, int> item;
+        item.first = record.value("name").toString();
         item.second = record.value("use times").toInt();
         type_list.push_back(item);
     } while (query.next());
@@ -82,9 +109,9 @@ list<money_data_item> money_sql_data::poll_money(int start_date, int end_date)
         money_data_item item;
         item.rowid = record.value("rowid").toInt();
         item.data = record.value("date").toInt();
-        item.money_type = record.value("type").toString().toStdString();
+        item.money_type = record.value("type").toString();
         item.money = record.value("money").toFloat();
-        item.money_note = record.value("note").toString().toStdString();
+        item.money_note = record.value("note").toString();
         money_list.push_back(item);
     } while (query.next());
     return money_list;

@@ -44,11 +44,11 @@ void month_pie_chart_widget::update_month_table()
     auto money_list = money_data.poll_money(money_data.get_month(), money_data.get_date());
     float consumer_total = 0.0f;//消费总计
     float wages_total = 0.0f;//工资总计
-    list < std::pair<string, float>> class_list;
+    list < std::pair<QString, float>> class_list;
     for (auto iter = money_list.begin(); iter != money_list.end(); ++iter)
     {
         //统计总金额
-        if (iter->money_type != "工资")
+        if (iter->money_type != QStringLiteral("工资"))
             consumer_total += iter->money;
         else
             wages_total += iter->money;
@@ -63,17 +63,17 @@ void month_pie_chart_widget::update_month_table()
             class_iter->second += iter->money;
         else
         {
-            std::pair<string, float> item;
+            std::pair<QString, float> item;
             item.first = iter->money_type;
             item.second = iter->money;
             class_list.push_back(item);
         }
     }
-    class_list.sort([](const std::pair<string, float> &c0, const std::pair<string, float> &c1)->bool
+    class_list.sort([](const std::pair<QString, float> &c0, const std::pair<QString, float> &c1)->bool
     {
-        if (c0.first == "工资" || c1.first == "工资")
+        if (c0.first == QStringLiteral("工资") || c1.first == QStringLiteral("工资"))
         {
-            if (c0.first == "工资")
+            if (c0.first == QStringLiteral("工资"))
                 return false;
             else
                 return true;
@@ -90,16 +90,14 @@ void month_pie_chart_widget::update_month_table()
     for (auto class_iter = class_list.begin(); class_iter != class_list.end(); ++class_iter, ++row)
     {
         QTableWidgetItem* item = new QTableWidgetItem();
-        item->setText(QString::fromLocal8Bit(class_iter->first.c_str()));
+        item->setText(class_iter->first);
         ui->tableWidget_month_class->setItem(row, 0, item);
         item = new QTableWidgetItem();
         item->setText(QString::fromLocal8Bit("%1").arg(class_iter->second));
         ui->tableWidget_month_class->setItem(row, 1, item);
         item = new QTableWidgetItem();
-        if (class_iter->first != "工资")
+        if (class_iter->first != QStringLiteral("工资"))
             item->setText(QString::fromLocal8Bit("%1%").arg(QString::number(100 * class_iter->second / consumer_total, 'f', 2)));
-        else
-            item->setText(QString::fromLocal8Bit("%1%").arg(QString::number(100, 'f', 2)));
         ui->tableWidget_month_class->setItem(row, 2, item);
     }
 }
@@ -109,10 +107,10 @@ void month_pie_chart_widget::update_month_charts()
     __charts->chart()->removeAllSeries();
     //当月统计
     auto money_list = money_data.poll_money(money_data.get_month(), money_data.get_date());
-    list < std::pair<string, float>> class_list;
+    list < std::pair<QString, float>> class_list;
     for (auto iter = money_list.begin(); iter != money_list.end(); ++iter)
     {
-        if (iter->money_type == "工资")
+        if (iter->money_type == QStringLiteral("工资"))
             continue;
         //统计类别
         auto class_iter = class_list.begin();
@@ -125,7 +123,7 @@ void month_pie_chart_widget::update_month_charts()
             class_iter->second += iter->money;
         else
         {
-            std::pair<string, float> item;
+            std::pair<QString, float> item;
             item.first = iter->money_type;
             item.second = iter->money;
             class_list.push_back(item);
@@ -136,7 +134,7 @@ void month_pie_chart_widget::update_month_charts()
 
     for (auto class_iter = class_list.begin(); class_iter != class_list.end(); ++class_iter)
     {
-        series->append(QString::fromLocal8Bit(class_iter->first.c_str()), class_iter->second);
+        series->append(class_iter->first, class_iter->second);
     }
     series->setLabelsVisible(true);
     __charts->chart()->removeAllSeries();

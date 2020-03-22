@@ -47,7 +47,7 @@ void add_note_widget::update_type_combox()
     ui->comboBox_type->clear();
     for (auto iter = type_list.begin(); iter != type_list.end(); ++iter)
     {
-        ui->comboBox_type->addItem(QString::fromLocal8Bit(iter->first.c_str()));
+        ui->comboBox_type->addItem(iter->first);
     }
     QString money_type = property("money_type").toString();
     if(money_type.length())
@@ -67,16 +67,16 @@ void add_note_widget::update_day_table()
     {
         //将消费纪录添加到当日消费列表
         QTableWidgetItem* item = new QTableWidgetItem();
-        item->setText(QString::fromLocal8Bit(iter->money_type.c_str()));
+        item->setText(iter->money_type);
         ui->tableWidget_day->setItem(row_count, 0, item);
         item = new QTableWidgetItem();
         item->setText(QString::number(iter->money, 'f', 2));
         ui->tableWidget_day->setItem(row_count, 1, item);
         item = new QTableWidgetItem();
-        item->setText(QString::fromLocal8Bit(iter->money_note.c_str()));
+        item->setText(iter->money_note);
         ui->tableWidget_day->setItem(row_count, 2, item);
 
-        if (iter->money_type != "工资")
+        if (iter->money_type != QStringLiteral("工资"))
             total += iter->money;
     }
     ui->groupBox_day->setTitle(QString::fromLocal8Bit("%1 总计 %2").arg(date.toString("yyyy/MM/dd")).arg(total));

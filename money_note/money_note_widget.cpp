@@ -44,11 +44,11 @@ void money_note_widget::update_year_table()
     float wages_total = 0.0f;//工资总计
     list<std::pair<int, float>> consumer_month_list;
     list<std::pair<int, float>> wages_month_list;
-    list < std::pair<string, float>> class_list;
+    list < std::pair<QString, float>> class_list;
     for (auto iter = money_list.begin(); iter != money_list.end(); ++iter)
     {
         //统计总金额
-        if(iter->money_type=="工资")
+        if(iter->money_type==QStringLiteral("工资"))
         {
             wages_total += iter->money;
             //统计月份
@@ -100,7 +100,7 @@ void money_note_widget::update_year_table()
             class_iter->second += iter->money;
         else
         {
-            std::pair<string, float> item;
+            std::pair<QString, float> item;
             item.first = iter->money_type;
             item.second = iter->money;
             class_list.push_back(item);
@@ -130,11 +130,11 @@ void money_note_widget::update_year_table()
         }
     }
     ui->tableWidget_year_class->setRowCount(class_list.size());
-    class_list.sort([](const std::pair<string, float> &c0, const std::pair<string, float> &c1)->bool
+    class_list.sort([](const std::pair<QString, float> &c0, const std::pair<QString, float> &c1)->bool
     {
-        if (c0.first == "工资" || c1.first == "工资")
+        if (c0.first == QStringLiteral("工资") || c1.first == QStringLiteral("工资"))
         {
-            if (c0.first == "工资")
+            if (c0.first == QStringLiteral("工资"))
                 return false;
             else
                 return true;
@@ -147,22 +147,19 @@ void money_note_widget::update_year_table()
     row = 0;
     for (auto class_iter = class_list.begin(); class_iter != class_list.end(); ++class_iter, ++row)
     {
-        if (class_iter->first == "工资")
+        if (class_iter->first == QStringLiteral("工资"))
         {
             QTableWidgetItem* item = new QTableWidgetItem();
-            item->setText(QString::fromLocal8Bit(class_iter->first.c_str()));
+            item->setText(class_iter->first);
             ui->tableWidget_year_class->setItem(row, 0, item);
             item = new QTableWidgetItem();
             item->setText(QString::fromLocal8Bit("%1").arg(class_iter->second));
             ui->tableWidget_year_class->setItem(row, 1, item);
-            item = new QTableWidgetItem();
-            item->setText(QString::fromLocal8Bit("%1%").arg(QString::number(100, 'f', 2)));
-            ui->tableWidget_year_class->setItem(row, 2, item);
         }
         else
         {
             QTableWidgetItem* item = new QTableWidgetItem();
-            item->setText(QString::fromLocal8Bit(class_iter->first.c_str()));
+            item->setText(class_iter->first);
             ui->tableWidget_year_class->setItem(row, 0, item);
             item = new QTableWidgetItem();
             item->setText(QString::fromLocal8Bit("%1").arg(class_iter->second));
@@ -180,11 +177,11 @@ void money_note_widget::update_month_table()
     auto money_list = money_data.poll_money(money_data.get_month(), money_data.get_date());
     float consumer_total = 0.0f;//消费总计
     float wages_total = 0.0f;//工资总计
-    list < std::pair<string, float>> class_list;
+    list < std::pair<QString, float>> class_list;
     for (auto iter = money_list.begin(); iter != money_list.end(); ++iter)
     {
         //统计总金额
-        if (iter->money_type != "工资")
+        if (iter->money_type != QStringLiteral("工资"))
             consumer_total += iter->money;
         else
             wages_total += iter->money;
@@ -199,18 +196,18 @@ void money_note_widget::update_month_table()
             class_iter->second += iter->money;
         else
         {
-            std::pair<string, float> item;
+            std::pair<QString, float> item;
             item.first = iter->money_type;
             item.second = iter->money;
             class_list.push_back(item);
         }
     }
 
-    class_list.sort([](const std::pair<string, float> &c0, const std::pair<string, float> &c1)->bool
+    class_list.sort([](const std::pair<QString, float> &c0, const std::pair<QString, float> &c1)->bool
     {
-        if (c0.first == "工资" || c1.first == "工资")
+        if (c0.first == QStringLiteral("工资") || c1.first == QStringLiteral("工资"))
         {
-            if (c0.first == "工资")
+            if (c0.first == QStringLiteral("工资"))
                 return false;
             else
                 return true;
@@ -227,17 +224,17 @@ void money_note_widget::update_month_table()
     for (auto class_iter = class_list.begin(); class_iter != class_list.end(); ++class_iter, ++row)
     {
         QTableWidgetItem* item = new QTableWidgetItem();
-        item->setText(QString::fromLocal8Bit(class_iter->first.c_str()));
+        item->setText(class_iter->first);
         ui->tableWidget_month_class->setItem(row, 0, item);
         item = new QTableWidgetItem();
         item->setText(QString::fromLocal8Bit("%1").arg(class_iter->second));
         ui->tableWidget_month_class->setItem(row, 1, item);
-        item = new QTableWidgetItem();
-        if (class_iter->first == "工资")
-            item->setText(QString::fromLocal8Bit("%1%").arg(QString::number(100, 'f', 2)));
-        else
+        if (class_iter->first != QStringLiteral("工资"))
+        {
+            item = new QTableWidgetItem();
             item->setText(QString::fromLocal8Bit("%1%").arg(QString::number(100 * class_iter->second / consumer_total, 'f', 2)));
-        ui->tableWidget_month_class->setItem(row, 2, item);
+            ui->tableWidget_month_class->setItem(row, 2, item);
+        }
     }
 }
 
@@ -252,16 +249,16 @@ void money_note_widget::update_day_table()
     {
         //将消费纪录添加到当日消费列表
         QTableWidgetItem* item = new QTableWidgetItem();
-        item->setText(QString::fromLocal8Bit(iter->money_type.c_str()));
+        item->setText(iter->money_type);
         ui->tableWidget_day->setItem(row_count, 0, item);
         item = new QTableWidgetItem();
         item->setText(QString::number(iter->money, 'f', 2));
         ui->tableWidget_day->setItem(row_count, 1, item);
         item = new QTableWidgetItem();
-        item->setText(QString::fromLocal8Bit(iter->money_note.c_str()));
+        item->setText(iter->money_note);
         ui->tableWidget_day->setItem(row_count, 2, item);
 
-        if (iter->money_type != "工资")
+        if (iter->money_type != QStringLiteral("工资"))
             consumer_total += iter->money;
     }
     ui->groupBox_day->setTitle(QString::fromLocal8Bit("今日总计 %1").arg(consumer_total));

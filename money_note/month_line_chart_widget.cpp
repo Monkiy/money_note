@@ -52,7 +52,7 @@ void month_line_chart_widget::update_month_table()
     for (auto iter = money_list.begin(); iter != money_list.end(); ++iter)
     {
         //统计总金额
-        if (iter->money_type == "工资")
+        if (iter->money_type == QStringLiteral("工资"))
         {
             wages_total += iter->money;
             //统计月份
@@ -128,7 +128,7 @@ void month_line_chart_widget::update_month_charts()
     for (auto iter = money_list.begin(); iter != money_list.end(); ++iter)
     {
         //统计总金额
-        if (iter->money_type == "工资")
+        if (iter->money_type == QStringLiteral("工资"))
         {
             //统计月份
             auto month_iter = wages_month_list.begin();
@@ -186,7 +186,7 @@ void month_line_chart_widget::update_month_charts()
 
     //工资折线
     QLineSeries *wages_seriesx = new QLineSeries();
-    wages_seriesx->setName(QString::fromLocal8Bit("工资"));
+    wages_seriesx->setName(QStringLiteral("工资"));
     wages_seriesx->setColor(Qt::blue);
 
     row = 0;
