@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <string>
 #include <list>
+#include <QtSql>
+#include <QSqlQuery>
 
 #define money_data money_sql_data::get_instance()
 
@@ -26,13 +28,15 @@ public:
     list<std::pair<string, int>> get_type_list();
 
     list<money_data_item> poll_money(int start_date, int end_date);
-    list < std::pair<string, float>> poll_class(int start_date, int end_date);
 
     static int get_date();
     static int get_month();
     static int get_year();
 private:
 private:
-    money_sql_data() {}
+    money_sql_data();
     money_sql_data(const money_sql_data&);
+
+private:
+    QSqlDatabase __db; //数据库
 };

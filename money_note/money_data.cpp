@@ -1,6 +1,6 @@
 ﻿#include "money_data.h"
-#include "sqlite.h"
-#include "code.h"
+#include <QApplication>
+#include <QMessageBox>
 
 money_sql_data & money_sql_data::get_instance()
 {
@@ -25,7 +25,8 @@ void money_sql_data::add_note(int date, const char * money_type, float money, co
             "values "
             "(%d,'%s',%.2f);", date, money_type, money);
     }
-    SQL.exec(sql);
+    QSqlQuery query;
+    query.exec(sql);
 }
 
 void money_sql_data::add_note(const char * money_type, float money, const char * note)
@@ -40,23 +41,27 @@ void money_sql_data::add_type(const char * money_type)
         "insert into note_type(name,use_times) "
         "values "
         "('%s',%d);", money_type, 9999);
-    SQL.exec(sql);
+    QSqlQuery query;
+    query.exec(sql);
 }
 
 list<std::pair<string, int>> money_sql_data::get_type_list()
 {
     list<std::pair<string, int>> type_list;
     char sql[512] = "select * from note_type;";
-    auto show_note_sql_call_back = [&type_list](int argc, std::string* argv, std::string* col_name)
+
+    QSqlQuery query;
+    query.exec(sql);
+    if(!query.first())
+        return type_list;
+    do
     {
-        if (2 > argc)
-            return;
+        QSqlRecord record = query.record();
         std::pair<string, int> item;
-        item.first = argv[0];
-        item.second = str_to_int(argv[1]);
+        item.first = record.value("name").toString().toStdString();
+        item.second = record.value("use times").toInt();
         type_list.push_back(item);
-    };
-    SQL.exec(sql, show_note_sql_call_back);
+    } while (query.next());
     return type_list;
 }
 
@@ -66,26 +71,23 @@ list<money_data_item> money_sql_data::poll_money(int start_date, int end_date)
     snprintf(sql, sizeof(sql),
         "select rowid,* from money_note where date>=%d and date <= %d;", start_date, end_date);
     list<money_data_item> money_list;
-    auto show_note_sql_call_back = [&money_list](int argc, std::string* argv, std::string* col_name)
-    {
-        if (4 > argc)
-            return;
-        money_data_item item;
-        item.rowid= str_to_int(argv[0]);
-        item.data = str_to_int(argv[1]);
-        item.money_type = argv[2];
-        item.money = str_to_float(argv[3]);
-        if (argc == 5)
-            item.money_note = argv[4];
-        money_list.push_back(item);
-    };
-    SQL.exec(sql, show_note_sql_call_back);
-    return money_list;
-}
 
-list < std::pair<string, float>> money_sql_data::poll_class(int start_date, int end_date)
-{
-    return list < std::pair<string, float>>();
+    QSqlQuery query;
+    query.exec(sql);
+    if (!query.first())
+        return money_list;
+    do
+    {
+        QSqlRecord record = query.record();
+        money_data_item item;
+        item.rowid = record.value("rowid").toInt();
+        item.data = record.value("date").toInt();
+        item.money_type = record.value("type").toString().toStdString();
+        item.money = record.value("money").toFloat();
+        item.money_note = record.value("note").toString().toStdString();
+        money_list.push_back(item);
+    } while (query.next());
+    return money_list;
 }
 
 int money_sql_data::get_date()
@@ -110,4 +112,18 @@ int money_sql_data::get_year()
     tm* m = localtime(&t);
     int date = (1900 + m->tm_year) * 10000 + 1 * 100 + 1;
     return date;
+}
+
+money_sql_data::money_sql_data()
+{
+    __db= QSqlDatabase::addDatabase("QSQLITE"); //添加 SQL LITE数据库驱动
+    QString app_path= QCoreApplication::applicationDirPath();
+    QString db_file = app_path = app_path + "/sqlite.db";
+    __db.setDatabaseName(db_file); //设置数据库名称
+    if (!__db.open())   //打开数据库
+    {
+        QMessageBox::warning(0, QStringLiteral("错误"), QStringLiteral("打开数据库失败"),
+            QMessageBox::Ok, QMessageBox::NoButton);
+        return;
+    }
 }

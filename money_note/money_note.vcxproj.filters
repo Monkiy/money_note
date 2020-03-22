@@ -28,9 +28,6 @@
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
-    <Filter Include="sqlite">
-      <UniqueIdentifier>{e17b28f0-ed2c-483f-af25-52911077959a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -47,15 +44,6 @@
     </ClCompile>
     <ClCompile Include="widget_list.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code.cpp">
-      <Filter>sqlite</Filter>
-    </ClCompile>
-    <ClCompile Include="sqlite.cpp">
-      <Filter>sqlite</Filter>
-    </ClCompile>
-    <ClCompile Include="sqlite3.c">
-      <Filter>sqlite</Filter>
     </ClCompile>
     <ClCompile Include="add_note_widget.cpp">
       <Filter>Source Files</Filter>
@@ -136,15 +124,6 @@
     </ClInclude>
     <ClInclude Include="item_widget.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="code.h">
-      <Filter>sqlite</Filter>
-    </ClInclude>
-    <ClInclude Include="sqlite.h">
-      <Filter>sqlite</Filter>
-    </ClInclude>
-    <ClInclude Include="sqlite3.h">
-      <Filter>sqlite</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
