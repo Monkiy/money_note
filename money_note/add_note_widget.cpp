@@ -51,6 +51,7 @@ void add_note_widget::update_type_combox()
     {
         ui->comboBox_type->addItem(iter->first);
     }
+    ui->comboBox_type->addItem(QStringLiteral("工资"));
     QString money_type = property("money_type").toString();
     if(money_type.length())
         ui->comboBox_type->setCurrentIndex(ui->comboBox_type->findText(money_type));
