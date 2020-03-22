@@ -1,6 +1,8 @@
 ﻿#include "add_note_widget.h"
 #include "ui_add_note_widget.h"
 #include "money_data.h"
+#include <QMessageBox>
+#define ROWID Qt::UserRole+1
 
 add_note_widget::add_note_widget(QWidget* parent) :
     item_widget(parent),
@@ -67,6 +69,7 @@ void add_note_widget::update_day_table()
     {
         //将消费纪录添加到当日消费列表
         QTableWidgetItem* item = new QTableWidgetItem();
+        item->setData(ROWID, iter->rowid);
         item->setText(iter->money_type);
         ui->tableWidget_day->setItem(row_count, 0, item);
         item = new QTableWidgetItem();
@@ -134,4 +137,32 @@ void add_note_widget::slot_add_type_bt_clicked()
     ui->comboBox_type->addItem(money_type);
     ui->comboBox_type->setCurrentIndex(ui->comboBox_type->findText(money_type));
     money_data.add_type(money_type);
+}
+
+void add_note_widget::on_tableWidget_day_cellDoubleClicked(int row, int)
+{
+    QString money, money_type, money_note;
+    unsigned int rowid;
+    QTableWidgetItem* item;
+    item = ui->tableWidget_day->item(row, 0);
+    money_type= item->text();
+    rowid = item->data(ROWID).toUInt();
+    item = ui->tableWidget_day->item(row, 1);
+    money = item->text();
+    item = ui->tableWidget_day->item(row, 2);
+    if(item)
+        money_note = item->text();
+    QString msg_str;
+    if (money_note.isEmpty())
+    {
+        msg_str = QStringLiteral("是否删除记录<%1,%2>").arg(money_type).arg(money);
+    }
+    else
+    {
+        msg_str = QStringLiteral("是否删除记录<%1,%2,%3>").arg(money_type).arg(money).arg(money_note);
+    }
+    if (QMessageBox::Ok != QMessageBox::information(this, QStringLiteral("提示"), msg_str,QMessageBox::Ok | QMessageBox::Cancel))
+        return;
+    money_data.remove_note(rowid);
+    update_day_table();
 }

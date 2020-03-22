@@ -23,6 +23,8 @@ private slots:
     void slot_date_changed();
     void slot_add_note_bt_clicked();
     void slot_add_type_bt_clicked();
+
+    void on_tableWidget_day_cellDoubleClicked(int, int);
 private:
     Ui::add_note_widget* ui;
 };

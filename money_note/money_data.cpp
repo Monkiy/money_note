@@ -49,8 +49,7 @@ void money_sql_data::update_note(unsigned int rowid, int date, const QString& mo
 
 void money_sql_data::remove_note(unsigned int rowid)
 {
-    char sql[512] = {};
-    snprintf(sql, sizeof(sql), "delete money_note where rowid=%d", rowid);
+    QString sql = QString("delete from money_note where rowid=%1").arg(rowid);
     QSqlQuery query;
     query.exec(sql);
 }
