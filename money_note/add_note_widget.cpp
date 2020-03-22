@@ -109,9 +109,9 @@ void add_note_widget::slot_add_note_bt_clicked()
         return;
     QString money_note = ui->lineEdit_note->text();
     if (money_note.length())
-        money_data.add_note(date_key, money_type.toLocal8Bit().data(), money, money_note.toLocal8Bit().data());
+        money_data.add_note(date_key, money_type, money, money_note);
     else
-        money_data.add_note(date_key, money_type.toLocal8Bit().data(), money);
+        money_data.add_note(date_key, money_type, money);
 
     setProperty("money_type", money_type);
     ui->doubleSpinBox_value->clear();
@@ -133,5 +133,5 @@ void add_note_widget::slot_add_type_bt_clicked()
     }
     ui->comboBox_type->addItem(money_type);
     ui->comboBox_type->setCurrentIndex(ui->comboBox_type->findText(money_type));
-    money_data.add_type(money_type.toLocal8Bit().data());
+    money_data.add_type(money_type);
 }

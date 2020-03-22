@@ -20,11 +20,11 @@ class money_sql_data
 {
 public:
     static money_sql_data& get_instance();
-    void add_note(int date, const char* money_type, float money, const char* note = 0);
-    void add_note(const char* money_type, float money, const char* note = 0);
-    void update_note(unsigned int rowid,int date, const char* money_type, float money, const char* note = 0);
+    void add_note(int date, const QString& money_type, float money, const QString& note = QString());
+    void add_note(const QString& money_type, float money, const QString& note = 0);
+    void update_note(unsigned int rowid,int date, const QString& money_type, float money, const QString& note = QString());
     void remove_note(unsigned int rowid);
-    void add_type(const char* money_type);
+    void add_type(const QString& money_type);
     list<std::pair<QString, int>> get_type_list();
 
     list<money_data_item> poll_money(int start_date, int end_date);

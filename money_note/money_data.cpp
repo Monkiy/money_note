@@ -8,46 +8,40 @@ money_sql_data & money_sql_data::get_instance()
     return sql;
 }
 
-void money_sql_data::add_note(int date, const char * money_type, float money, const char * note)
+void money_sql_data::add_note(int date, const QString& money_type, float money, const QString& note)
 {
-    char sql[512] = {};
-    if (note)
+    QString sql;
+    if (!note.isEmpty())
     {
-        snprintf(sql, sizeof(sql),
-            "insert into money_note(date,type,money,note) "
-            "values "
-            "(%d,'%s',%.2f,'%s');", date, money_type, money, note);
+        sql=QString("insert into money_note(date,type,money,note) values (%1,'%2',%3,'%4');")
+            .arg(date).arg(money_type).arg(money).arg(note);
     }
     else
     {
-        snprintf(sql, sizeof(sql),
-            "insert into money_note(date,type,money) "
-            "values "
-            "(%d,'%s',%.2f);", date, money_type, money);
+        sql = QString("insert into money_note(date,type,money) values (%1,'%2',%3);")
+            .arg(date).arg(money_type).arg(money);
     }
     QSqlQuery query;
     query.exec(sql);
 }
 
-void money_sql_data::add_note(const char * money_type, float money, const char * note)
+void money_sql_data::add_note(const QString& money_type, float money, const QString& note)
 {
     add_note(get_date(), money_type, money, note);
 }
 
-void money_sql_data::update_note(unsigned int rowid, int date, const char * money_type, float money, const char * note)
+void money_sql_data::update_note(unsigned int rowid, int date, const QString& money_type, float money, const QString& note)
 {
-    char sql[512] = {};
-    if (note)
+    QString sql;
+    if (!note.isEmpty())
     {
-        snprintf(sql, sizeof(sql),
-            "update money_note set date=%d,type='%s',money=%.2f,note='%s' where rowid=%d"
-            , date, money_type, money, note ,rowid);
+        sql=QString("update money_note set date=%1,type='%2',money=%3,note='%4' where rowid=%5")
+            .arg(date).arg(money_type).arg(money).arg(note).arg(rowid);
     }
     else
     {
-        snprintf(sql, sizeof(sql),
-            "update money_note set date=%d,type='%s',money=%.2f,note=null where rowid=%d"
-            , date, money_type, money, rowid);
+        sql = QString("update money_note set date=%1,type='%2',money=%3,note=null where rowid=%4")
+            .arg(date).arg(money_type).arg(money).arg(rowid);
     }
     QSqlQuery query;
     query.exec(sql);
@@ -61,13 +55,9 @@ void money_sql_data::remove_note(unsigned int rowid)
     query.exec(sql);
 }
 
-void money_sql_data::add_type(const char * money_type)
+void money_sql_data::add_type(const QString& money_type)
 {
-    char sql[512] = {};
-    snprintf(sql, sizeof(sql),
-        "insert into note_type(name,use_times) "
-        "values "
-        "('%s',%d);", money_type, 0);
+    QString sql = QString("insert into note_type(name,use_times) values ('%1',%2);").arg(money_type).arg(0);
     QSqlQuery query;
     query.exec(sql);
 }
