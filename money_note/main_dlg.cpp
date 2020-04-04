@@ -6,17 +6,19 @@ main_dlg::main_dlg(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+    ui.toolButton_home->setDefaultAction(ui.act_home);
+    ui.toolButton_upper->setDefaultAction(ui.act_upper);
     setWindowState(Qt::WindowMaximized);
     widgets.set_parent_param(this,ui.verticalLayout_main);
     widgets.push_widget(new money_note_widget());
 }
 
-void main_dlg::slot_home_bt_clicked()
+void main_dlg::on_act_home_triggered()
 {
     widgets.go_home();
 }
 
-void main_dlg::slot_upper_bt_clicked()
+void main_dlg::on_act_upper_triggered()
 {
     widgets.go_upper();
 }

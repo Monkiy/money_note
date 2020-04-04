@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="image">
+    <file>image/back.png</file>
+    <file>image/home.png</file>
     <file>image/note.ico</file>
   </qresource>
 </RCC>

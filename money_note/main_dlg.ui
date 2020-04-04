@@ -22,16 +22,45 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="pushButton_home">
+       <widget class="QToolButton" name="toolButton_home">
         <property name="text">
-         <string>首页</string>
+         <string>...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="main_dlg.qrc">
+          <normaloff>:/image/image/home.png</normaloff>:/image/image/home.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_upper">
+       <widget class="QToolButton" name="toolButton_upper">
         <property name="text">
-         <string>返回上一级</string>
+         <string>...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="main_dlg.qrc">
+          <normaloff>:/image/image/back.png</normaloff>:/image/image/back.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+        <property name="arrowType">
+         <enum>Qt::NoArrow</enum>
         </property>
        </widget>
       </item>
@@ -73,45 +102,30 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="act_home">
+   <property name="icon">
+    <iconset resource="main_dlg.qrc">
+     <normaloff>:/image/image/home.png</normaloff>:/image/image/home.png</iconset>
+   </property>
+   <property name="text">
+    <string>主页</string>
+   </property>
+  </action>
+  <action name="act_upper">
+   <property name="icon">
+    <iconset resource="main_dlg.qrc">
+     <normaloff>:/image/image/back.png</normaloff>:/image/image/back.png</iconset>
+   </property>
+   <property name="text">
+    <string>上一级</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
   <include location="main_dlg.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>pushButton_home</sender>
-   <signal>clicked()</signal>
-   <receiver>main_dlgClass</receiver>
-   <slot>slot_home_bt_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>47</x>
-     <y>36</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>46</x>
-     <y>16</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_upper</sender>
-   <signal>clicked()</signal>
-   <receiver>main_dlgClass</receiver>
-   <slot>slot_upper_bt_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>127</x>
-     <y>32</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>127</x>
-     <y>18</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>slot_home_bt_clicked()</slot>
   <slot>slot_upper_bt_clicked()</slot>
