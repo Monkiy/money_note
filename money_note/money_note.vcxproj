@@ -163,6 +163,9 @@
   <ItemGroup>
     <ResourceCompile Include="money_note.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="image\note.ico" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

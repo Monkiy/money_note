@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/main_dlg">
-        <file>Resources/icon.png</file>
-    </qresource>
+  <qresource prefix="image">
+    <file>image/note.ico</file>
+  </qresource>
 </RCC>

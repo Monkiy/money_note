@@ -129,4 +129,7 @@
   <ItemGroup>
     <ResourceCompile Include="money_note.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="image\note.ico" />
+  </ItemGroup>
 </Project>
