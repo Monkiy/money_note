@@ -31,6 +31,7 @@ money_note_widget::~money_note_widget()
 
 void money_note_widget::update()
 {
+    update_year_table();
     update_month_table();
     update_day_table();
 }

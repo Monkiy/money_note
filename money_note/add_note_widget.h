@@ -5,6 +5,7 @@ namespace Ui {
     class add_note_widget;
 } // namespace Ui
 
+class QTableWidgetItem;
 class add_note_widget :public item_widget
 {
     Q_OBJECT
@@ -23,8 +24,9 @@ private slots:
     void slot_date_changed();
     void slot_add_note_bt_clicked();
     void slot_add_type_bt_clicked();
-
-    void on_tableWidget_day_cellDoubleClicked(int, int);
+    void on_comboBox_type_currentIndexChanged(int index);
+    void on_bt_remove_note_clicked();
+    void slot_tableWidget_day_itemChanged(QTableWidgetItem *item);
 private:
     Ui::add_note_widget* ui;
 };

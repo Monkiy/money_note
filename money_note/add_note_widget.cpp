@@ -2,6 +2,7 @@
 #include "ui_add_note_widget.h"
 #include "money_data.h"
 #include <QMessageBox>
+#include "add_note_table_delegate.h"
 #define ROWID Qt::UserRole+1
 
 add_note_widget::add_note_widget(QWidget* parent) :
@@ -10,9 +11,13 @@ add_note_widget::add_note_widget(QWidget* parent) :
 {
     ui->setupUi(this);
     ui->tableWidget_day->verticalHeader()->hide();
-    ui->tableWidget_day->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->doubleSpinBox_value->clear();
+    //ui->tableWidget_day->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->doubleSpinBox_value->setValue(0);
     ui->dateEdit->setCalendarPopup(true);
+
+    //设置消息记录的显示代理
+    add_note_table_delegate* table_delegate = new add_note_table_delegate(this);
+    ui->tableWidget_day->setItemDelegate(table_delegate);
 }
 
 add_note_widget::~add_note_widget()
@@ -45,20 +50,27 @@ void add_note_widget::update_date()
 void add_note_widget::update_type_combox()
 {
     //更新消费类别选项
+    QStringList note_types;
     auto type_list = money_data.get_type_list();
     ui->comboBox_type->clear();
     for (auto iter = type_list.begin(); iter != type_list.end(); ++iter)
     {
         ui->comboBox_type->addItem(iter->first);
+        note_types.push_back(iter->first);
     }
     ui->comboBox_type->addItem(QStringLiteral("工资"));
     QString money_type = property("money_type").toString();
     if(money_type.length())
         ui->comboBox_type->setCurrentIndex(ui->comboBox_type->findText(money_type));
+
+    add_note_table_delegate* table_delegate = dynamic_cast<add_note_table_delegate*>(ui->tableWidget_day->itemDelegate());
+    if (table_delegate)
+        table_delegate->set_note_types(note_types);
 }
 
 void add_note_widget::update_day_table()
 {
+    disconnect(ui->tableWidget_day, &QTableWidget::itemChanged, this, &add_note_widget::slot_tableWidget_day_itemChanged);
     //更新当日消费纪录
     QDate date = ui->dateEdit->date();
     int date_key = date.year() * 10000 + date.month() * 100 + date.day();
@@ -84,6 +96,7 @@ void add_note_widget::update_day_table()
             total += iter->money;
     }
     ui->groupBox_day->setTitle(QString::fromLocal8Bit("%1 总计 %2").arg(date.toString("yyyy/MM/dd")).arg(total));
+    connect(ui->tableWidget_day, &QTableWidget::itemChanged, this, &add_note_widget::slot_tableWidget_day_itemChanged);
 }
 
 void add_note_widget::slot_date_changed()
@@ -110,7 +123,11 @@ void add_note_widget::slot_add_note_bt_clicked()
         return;
     float money = ui->doubleSpinBox_value->value();
     if (0.01l > money)
+    {
+        ui->doubleSpinBox_value->setFocus();
+        ui->doubleSpinBox_value->selectAll();
         return;
+    }
     QString money_note = ui->lineEdit_note->text();
     if (money_note.length())
         money_data.add_note(date_key, money_type, money, money_note);
@@ -118,7 +135,10 @@ void add_note_widget::slot_add_note_bt_clicked()
         money_data.add_note(date_key, money_type, money);
 
     setProperty("money_type", money_type);
-    ui->doubleSpinBox_value->clear();
+    ui->doubleSpinBox_value->setValue(0);
+    ui->doubleSpinBox_value->setFocus();
+    ui->doubleSpinBox_value->selectAll();
+    //QTimer::singleShot(0, ui->inputEdit, &QLineEdit::selectAll);
     ui->lineEdit_note->clear();
     update();
 }
@@ -126,7 +146,7 @@ void add_note_widget::slot_add_note_bt_clicked()
 void add_note_widget::slot_add_type_bt_clicked()
 {
     //添加一条消费类别
-    QString money_type = ui->lineEdit_type->text();
+    /*QString money_type = ui->lineEdit_type->text();
     if (0 == money_type.length())
         return;
     ui->lineEdit_type->clear();
@@ -137,21 +157,31 @@ void add_note_widget::slot_add_type_bt_clicked()
     }
     ui->comboBox_type->addItem(money_type);
     ui->comboBox_type->setCurrentIndex(ui->comboBox_type->findText(money_type));
-    money_data.add_type(money_type);
+    money_data.add_type(money_type);*/
 }
 
-void add_note_widget::on_tableWidget_day_cellDoubleClicked(int row, int)
+void add_note_widget::on_comboBox_type_currentIndexChanged(int index)
+{
+    ui->doubleSpinBox_value->setValue(0);
+    ui->doubleSpinBox_value->setFocus();
+    ui->doubleSpinBox_value->selectAll();
+}
+
+void add_note_widget::on_bt_remove_note_clicked()
 {
     QString money, money_type, money_note;
     unsigned int rowid;
-    QTableWidgetItem* item;
+    QTableWidgetItem* item=ui->tableWidget_day->currentItem();
+    if (!item)
+        return;
+    int row = item->row();
     item = ui->tableWidget_day->item(row, 0);
-    money_type= item->text();
+    money_type = item->text();
     rowid = item->data(ROWID).toUInt();
     item = ui->tableWidget_day->item(row, 1);
     money = item->text();
     item = ui->tableWidget_day->item(row, 2);
-    if(item)
+    if (item)
         money_note = item->text();
     QString msg_str;
     if (money_note.isEmpty())
@@ -162,8 +192,29 @@ void add_note_widget::on_tableWidget_day_cellDoubleClicked(int row, int)
     {
         msg_str = QStringLiteral("是否删除记录<%1,%2,%3>").arg(money_type).arg(money).arg(money_note);
     }
-    if (QMessageBox::Ok != QMessageBox::information(this, QStringLiteral("提示"), msg_str,QMessageBox::Ok | QMessageBox::Cancel))
+    if (QMessageBox::Ok != QMessageBox::information(this, QStringLiteral("提示"), msg_str, QMessageBox::Ok | QMessageBox::Cancel))
         return;
     money_data.remove_note(rowid);
+    update_day_table();
+}
+
+void add_note_widget::slot_tableWidget_day_itemChanged(QTableWidgetItem * item)
+{
+    if (!item)
+        return;
+    QDate date = ui->dateEdit->date();
+    int date_key = date.year() * 10000 + date.month() * 100 + date.day();
+    QString money, money_type, money_note;
+    unsigned int rowid;
+    int row = item->row();
+    item = ui->tableWidget_day->item(row, 0);
+    money_type = item->text();
+    rowid = item->data(ROWID).toUInt();
+    item = ui->tableWidget_day->item(row, 1);
+    money = item->text();
+    item = ui->tableWidget_day->item(row, 2);
+    if (item)
+        money_note = item->text();
+    money_data.update_note(rowid, date_key, money_type, money.toFloat(), money_note);
     update_day_table();
 }

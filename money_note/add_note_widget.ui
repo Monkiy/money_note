@@ -16,6 +16,59 @@
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
    <item>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="bt_add_note">
+       <property name="text">
+        <string>添加消费</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="bt_manage_type">
+       <property name="text">
+        <string>管理类别</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="comboBox_type"/>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="lineEdit_note">
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>金额</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
      <item row="2" column="1">
       <widget class="QDoubleSpinBox" name="doubleSpinBox_value">
        <property name="styleSheet">
@@ -37,6 +90,13 @@ QDoubleSpinBox::up-button,QDoubleSpinBox::down-button
        </property>
       </widget>
      </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>日期</string>
+       </property>
+      </widget>
+     </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
@@ -44,43 +104,10 @@ QDoubleSpinBox::up-button,QDoubleSpinBox::down-button
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="lineEdit_note">
-       <property name="minimumSize">
-        <size>
-         <width>200</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>200</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>类别</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="comboBox_type"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>金额</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>日期</string>
        </property>
       </widget>
      </item>
@@ -99,55 +126,12 @@ QDateEdit::up-button,QDateEdit::down-button
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="pushButton_add_note">
+     <item row="2" column="2">
+      <widget class="QPushButton" name="bt_remove_note">
        <property name="text">
-        <string>新增</string>
+        <string>删除消费</string>
        </property>
       </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>类别</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
-      <widget class="QLineEdit" name="lineEdit_type">
-       <property name="minimumSize">
-        <size>
-         <width>160</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>160</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="6">
-      <widget class="QPushButton" name="pushButton_add_type">
-       <property name="text">
-        <string>新增</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>
@@ -184,7 +168,7 @@ QDateEdit::up-button,QDateEdit::down-button
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton_add_note</sender>
+   <sender>bt_add_note</sender>
    <signal>clicked()</signal>
    <receiver>add_note_widget</receiver>
    <slot>slot_add_note_bt_clicked()</slot>
@@ -200,7 +184,7 @@ QDateEdit::up-button,QDateEdit::down-button
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_add_type</sender>
+   <sender>bt_manage_type</sender>
    <signal>clicked()</signal>
    <receiver>add_note_widget</receiver>
    <slot>slot_add_type_bt_clicked()</slot>

@@ -60,6 +60,9 @@
     <ClCompile Include="month_line_chart_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="add_note_table_delegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="main_dlg.h">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="month_line_chart_widget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="add_note_table_delegate.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
