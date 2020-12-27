@@ -18,6 +18,8 @@ add_note_widget::add_note_widget(QWidget* parent) :
     //设置消息记录的显示代理
     add_note_table_delegate* table_delegate = new add_note_table_delegate(this);
     ui->tableWidget_day->setItemDelegate(table_delegate);
+    ui->doubleSpinBox_value->installEventFilter(this);
+    ui->lineEdit_note->installEventFilter(this);
 }
 
 add_note_widget::~add_note_widget()
@@ -30,6 +32,39 @@ void add_note_widget::update()
     update_date();
     update_type_combox();
     update_day_table();
+}
+
+void add_note_widget::timerEvent(QTimerEvent * event)
+{
+    if (event->timerId() == m_valueSelectAllTimer)
+    {
+        killTimer(m_valueSelectAllTimer);
+        ui->doubleSpinBox_value->selectAll();
+    }
+    else if (event->timerId() == m_noteSelectAllTimer)
+    {
+        killTimer(m_noteSelectAllTimer);
+        ui->lineEdit_note->selectAll();
+    }
+}
+
+bool add_note_widget::eventFilter(QObject * target, QEvent * event)
+{
+    if (target == ui->doubleSpinBox_value)
+    {
+        if (event->type() == QEvent::FocusIn)
+        {
+            m_valueSelectAllTimer = startTimer(100);
+        }
+    }
+    else if (target == ui->lineEdit_note)
+    {
+        if (event->type() == QEvent::FocusIn)
+        {
+            m_noteSelectAllTimer = startTimer(100);
+        }
+    }
+    return QWidget::eventFilter(target, event);
 }
 
 void add_note_widget::update_date()
@@ -135,10 +170,6 @@ void add_note_widget::slot_add_note_bt_clicked()
         money_data.add_note(date_key, money_type, money);
 
     setProperty("money_type", money_type);
-    ui->doubleSpinBox_value->setValue(0);
-    ui->doubleSpinBox_value->setFocus();
-    ui->doubleSpinBox_value->selectAll();
-    //QTimer::singleShot(0, ui->inputEdit, &QLineEdit::selectAll);
     ui->lineEdit_note->clear();
     update();
 }
@@ -158,13 +189,6 @@ void add_note_widget::slot_add_type_bt_clicked()
     ui->comboBox_type->addItem(money_type);
     ui->comboBox_type->setCurrentIndex(ui->comboBox_type->findText(money_type));
     money_data.add_type(money_type);*/
-}
-
-void add_note_widget::on_comboBox_type_currentIndexChanged(int index)
-{
-    ui->doubleSpinBox_value->setValue(0);
-    ui->doubleSpinBox_value->setFocus();
-    ui->doubleSpinBox_value->selectAll();
 }
 
 void add_note_widget::on_bt_remove_note_clicked()

@@ -165,6 +165,16 @@ QDateEdit::up-button,QDateEdit::down-button
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>dateEdit</tabstop>
+  <tabstop>comboBox_type</tabstop>
+  <tabstop>doubleSpinBox_value</tabstop>
+  <tabstop>lineEdit_note</tabstop>
+  <tabstop>bt_add_note</tabstop>
+  <tabstop>bt_manage_type</tabstop>
+  <tabstop>bt_remove_note</tabstop>
+  <tabstop>tableWidget_day</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
