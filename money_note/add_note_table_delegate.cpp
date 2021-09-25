@@ -22,7 +22,7 @@ QWidget * add_note_table_delegate::createEditor(QWidget * parent, const QStyleOp
     else if (1 == index.column())
     {
         QDoubleSpinBox* w = new QDoubleSpinBox(parent);
-        w->setRange(0, 10000);
+        w->setRange(0, 1000000);
         return w;
     }
     else if (2 == index.column())

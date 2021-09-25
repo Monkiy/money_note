@@ -32,6 +32,7 @@ void add_note_widget::update()
     update_date();
     update_type_combox();
     update_day_table();
+    ui->doubleSpinBox_value->setFocus();
 }
 
 void add_note_widget::timerEvent(QTimerEvent * event)
@@ -171,6 +172,7 @@ void add_note_widget::slot_add_note_bt_clicked()
 
     setProperty("money_type", money_type);
     ui->lineEdit_note->clear();
+    ui->doubleSpinBox_value->setValue(0);
     update();
 }
 

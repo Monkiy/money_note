@@ -86,7 +86,7 @@ QDoubleSpinBox::up-button,QDoubleSpinBox::down-button
         <string>¥ </string>
        </property>
        <property name="maximum">
-        <double>9999.989999999999782</double>
+        <double>1000000.000000000000000</double>
        </property>
       </widget>
      </item>
